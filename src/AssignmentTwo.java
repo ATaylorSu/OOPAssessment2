@@ -5,7 +5,8 @@ public class AssignmentTwo {
         // demo.partFourA();
         // demo.partFourB();
         // demo.partFive();
-        demo.partSix();
+        // demo.partSix();
+        demo.partSeven();
     }
 
     public void partThree() {
@@ -206,6 +207,35 @@ public class AssignmentTwo {
 
         System.out.println("==========================================================================");
     }
-    public void partSeven() {}
+
+    public void partSeven() {
+        System.out.println("==================== Part7 ====================");
+
+        Employee adam = new Employee(
+                "Adam",
+                30,
+                "111111111111111111",
+                "EMP-001",
+                "Ride Operator"
+        );
+
+        Ride ferrisWheel = new Ride("Dreamy Sky", "Leisure category", adam);
+        System.out.println("1. Cycling history before import (initially empty):");
+        ferrisWheel.printRideHistory();
+
+        // 3. Import cycling history from CSV file exported from Part 6
+        System.out.println("\n2. Import cycling history from CSV file:");
+        String csvFilePath = "ferris_wheel_history.csv";
+        ferrisWheel.importRideHistory(csvFilePath);
+
+        // 4. Print the imported cycling history
+        System.out.println("\n3. Imported cycling history:");
+        ferrisWheel.printRideHistory();
+
+        // 5. Verify the import quantity
+        System.out.printf("\n4. Total number of tourists with cycling history after import:%d\n", ferrisWheel.numberOfVisitors());
+
+        System.out.println("==========================================================================");
+    }
 
 }

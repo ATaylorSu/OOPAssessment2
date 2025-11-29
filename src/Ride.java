@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -238,6 +240,67 @@ public class Ride implements RideInterface {
         } catch (IOException e) {
             System.out.printf("Export failed! IO exception:%s\n", e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    // ------ part7 ------
+    public void importRideHistory(String filePath) {
+        System.out.printf("\nStarting to import cycling history from CSV file:%s\n", filePath);
+
+        // 1. Initialize counter
+        int importedCount = 0;
+        int skippedCount = 0;
+
+        // 2. Read and parse CSV (try catch captures multiple types of exceptions)
+        try (
+                FileReader fileReader = new FileReader(filePath);
+                BufferedReader bufferedReader = new BufferedReader(fileReader)
+        ) {
+            String line;
+            boolean isFirstLine = true;
+
+            // Read CSV line by line
+            while ((line = bufferedReader.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                if (line.trim().isEmpty()) {
+                    skippedCount++;
+                    continue;
+                }
+
+                String[] fields = line.split(",");
+                if (fields.length != 5) {
+                    System.out.printf("Skip invalid lines: incorrect number of fields (5 required, current% d) - %s\n", fields.length, line);
+                    skippedCount++;
+                    continue;
+                }
+
+                try {
+                    String name = fields[0].trim();
+                    int age = Integer.parseInt(fields[1].trim());
+                    String personId = fields[2].trim();
+                    String ticketNumber = fields[3].trim();
+                    String visitDate = fields[4].trim();
+
+                    Visitor importedVisitor = new Visitor(name, age, personId, ticketNumber, visitDate);
+                    rideHistory.add(importedVisitor);
+                    importedCount++;
+
+                } catch (NumberFormatException e) {
+                    System.out.printf("Skip invalid line: Age format error (integer required) - %s\n", line);
+                    skippedCount++;
+                }
+            }
+
+            System.out.printf("Import completed! Successfully imported %d records, skipped %d invalid records\n", importedCount, skippedCount);
+
+        } catch (java.io.FileNotFoundException e) {
+            System.out.printf("Import failed: File does not exist - %s\n", filePath);
+        } catch (IOException e) {
+            System.out.printf("Import failed: IO exception - %s\n", e.getMessage());
         }
     }
 }
