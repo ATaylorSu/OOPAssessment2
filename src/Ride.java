@@ -2,6 +2,9 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Collections;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -199,6 +202,43 @@ public class Ride implements RideInterface {
 
         // 6. Print successful running message
         System.out.printf("[%s] Cycling cycle running successfully! Current total number of runs:% d times\n", this.rideName, numOfCycles);
+    }
+
+    // ------ part6 ------
+    public void exportRideHistory(String filePath) {
+        System.out.printf("\nStarting to export the cycling history of [%s] to CSV file:%s\n", this.rideName, filePath);
+
+        if (rideHistory.isEmpty()) {
+            System.out.printf("Export failed: The cycling history of [%s] is empty\n", this.rideName);
+            return;
+        }
+
+        try (
+                FileWriter fileWriter = new FileWriter(filePath);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
+        ) {
+            bufferedWriter.write("Name, age, ID number number, ticket number, visit date");
+            bufferedWriter.newLine();
+
+            for (Visitor visitor : rideHistory) {
+                String csvLine = String.format(
+                        "%s,%d,%s,%s,%s",
+                        visitor.getName(),          // Name
+                        visitor.getAge(),           // Age
+                        visitor.getPersonId(),      // ID Number
+                        visitor.getVisitorTicketNumber(), // Ticket Number
+                        visitor.getVisitDate()      // Visit Date
+                );
+                bufferedWriter.write(csvLine);
+                bufferedWriter.newLine();
+            }
+
+            System.out.printf("Export successful! A total of% d tourist records were exported to:%s\n", rideHistory.size(), filePath);
+
+        } catch (IOException e) {
+            System.out.printf("Export failed! IO exception:%s\n", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
 

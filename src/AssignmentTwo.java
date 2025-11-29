@@ -4,7 +4,8 @@ public class AssignmentTwo {
         // demo.partThree();
         // demo.partFourA();
         // demo.partFourB();
-        demo.partFive();
+        // demo.partFive();
+        demo.partSix();
     }
 
     public void partThree() {
@@ -171,7 +172,40 @@ public class AssignmentTwo {
         System.out.println("=======================================================================");
     }
 
-    public void partSix() {}
+    public void partSix() {
+        System.out.println("==================== Part6 ====================");
+
+        Employee adam = new Employee(
+                "Adam",
+                30,
+                "111111111111111111",
+                "EMP-001",
+                "Ride Operator"
+        );
+
+        Ride ferrisWheel = new Ride("Dreamy Sky", "Leisure category", adam);
+        ferrisWheel.setMaxRider(3); //Set a maximum of 3 people per session
+
+        System.out.println("\n1. Add 10 tourists to the waiting queue for the Ferris wheel:");
+        Visitor ben = new Visitor("Ben", 25, "222222222222222222", "TICKET-1001", "2025-11-30");
+        Visitor caleb = new Visitor("Caleb", 18, "333333333333333333", "TICKET-1002", "2025-11-30");
+        Visitor daniel = new Visitor("Daniel", 35, "444444444444444444", "TICKET-1003", "2025-11-30");
+        Visitor eddie = new Visitor("Eddie", 22, "555555555555555555", "TICKET-1004", "2025-11-30");
+        Visitor ford = new Visitor("Ford", 28, "666666666666666666", "TICKET-1005", "2025-11-30");
+
+        ferrisWheel.addVisitorToHistory(ben);
+        ferrisWheel.addVisitorToHistory(caleb);
+        ferrisWheel.addVisitorToHistory(daniel);
+        ferrisWheel.addVisitorToHistory(eddie);
+        ferrisWheel.addVisitorToHistory(ford);
+
+        // 4. Export cycling history to CSV file
+        System.out.println("\n2. Export cycling history to CSV file:");
+        String csvFilePath = "ferris_wheel_history.csv";
+        ferrisWheel.exportRideHistory(csvFilePath);
+
+        System.out.println("==========================================================================");
+    }
     public void partSeven() {}
 
 }
