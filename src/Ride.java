@@ -1,6 +1,7 @@
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.Collections;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -126,5 +127,19 @@ public class Ride implements RideInterface {
 
     @Override
     public void runOneCycle() {
+    }
+
+    public void sortRideHistory(VisitorComparator comparator) {
+        if (rideHistory.isEmpty()) {
+            System.out.printf("[%s] Sorting failed: No tourists in cycling history\n", this.rideName);
+            return;
+        }
+        if (comparator == null) {
+            System.out.printf("[%s] Sorting failed: Sorter is empty\n", this.rideName);
+            return;
+        }
+
+        Collections.sort(rideHistory, comparator);
+        System.out.printf("The cycling history of [%s] has been sorted according to the rules (age ascending → name ascending)\n", this.rideName);
     }
 }

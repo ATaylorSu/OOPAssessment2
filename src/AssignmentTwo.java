@@ -1,7 +1,9 @@
 public class AssignmentTwo {
     public static void main(String[] args) {
         AssignmentTwo demo = new AssignmentTwo();
-        demo.partFourA();
+        // demo.partThree();
+        // demo.partFourA();
+        demo.partFourB();
     }
 
     public void partThree() {
@@ -68,7 +70,47 @@ public class AssignmentTwo {
         System.out.println("======================================================================");
     }
 
-    public void partFourB() {}
+    public void partFourB() {
+        System.out.println("==================== Part4B ====================");
+
+        Employee adam = new Employee(
+                "Adam",
+                30,
+                "111111111111111111",
+                "EMP-001",
+                "Ride Operator"
+        );
+
+        Ride ferrisWheel = new Ride("Dreamy Sky", "Leisure category", adam);
+        Visitor ben = new Visitor("Ben", 25, "222222222222222222", "TICKET-1001", "2025-11-30");
+        Visitor caleb = new Visitor("Caleb", 18, "333333333333333333", "TICKET-1002", "2025-11-30");
+        Visitor daniel = new Visitor("Daniel", 35, "444444444444444444", "TICKET-1003", "2025-11-30");
+        Visitor eddie = new Visitor("Eddie", 22, "555555555555555555", "TICKET-1004", "2025-11-30");
+        Visitor ford = new Visitor("Ford", 28, "666666666666666666", "TICKET-1005", "2025-11-30");
+
+        ferrisWheel.addVisitorToHistory(ben);
+        ferrisWheel.addVisitorToHistory(caleb);
+        ferrisWheel.addVisitorToHistory(daniel);
+        ferrisWheel.addVisitorToHistory(eddie);
+        ferrisWheel.addVisitorToHistory(ford);
+
+        // Print the history before sorting (original order added: Ben → Caleb → Daniel → Eddie → Ford)
+        System.out.println("\n1. Cycling history before sorting (original order of addition):");
+        ferrisWheel.printRideHistory();
+
+        // 4. 执行排序（使用自定义VisitorComparator）
+        System.out.println("\n2. Sort the cycling history:");
+        VisitorComparator ageNameComparator = new VisitorComparator();
+        ferrisWheel.sortRideHistory(ageNameComparator);
+
+        // 5. 打印排序后的历史（预期顺序：Caleb(18)→Eddie(22)→Ben(25)→Ford(28)→Daniel(35)）
+        System.out.println("\n3. Sorted cycling history (ascending age → ascending name):");
+        ferrisWheel.printRideHistory();
+
+        System.out.println("=======================================================================");
+    }
+
+    public void partFive() {}
     public void partSix() {}
     public void partSeven() {}
 
