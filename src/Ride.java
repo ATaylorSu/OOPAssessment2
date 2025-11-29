@@ -8,8 +8,9 @@ public class Ride implements RideInterface {
     private String rideType;
     private Employee operator;
     private Queue<Visitor> waitingLine;
-
     private LinkedList<Visitor> rideHistory;
+    private int maxRider;
+    private int numOfCycles;
 
     public Ride() {
         this.rideName = "Unknown Ride";
@@ -17,6 +18,8 @@ public class Ride implements RideInterface {
         this.operator = new Employee();
         this.waitingLine = new LinkedList<>();
         this.rideHistory = new LinkedList<>();
+        this.maxRider = 2;
+        this.numOfCycles = 0;
     }
 
     public Ride(String rideName, String rideType, Employee operator) {
@@ -25,6 +28,25 @@ public class Ride implements RideInterface {
         this.operator = operator;
         this.waitingLine = new LinkedList<>();
         this.rideHistory = new LinkedList<>();
+        this.maxRider = 2;
+        this.numOfCycles = 0;
+    }
+
+    public int getMaxRider() {
+        return maxRider;
+    }
+
+    public void setMaxRider(int maxRider) {
+        if (maxRider >= 1) {
+            this.maxRider = maxRider;
+            System.out.printf("[%s] The maximum number of tourists per visit has been set to:%d people\n", this.rideName, maxRider);
+        } else {
+            System.out.printf("[%s] Setting maximum number of tourists failed: ≥ 1 person is required (current input:%d)\n", this.rideName, maxRider);
+        }
+    }
+
+    public int getNumOfCycles() {
+        return numOfCycles;
     }
 
     public String getRideName() { return rideName; }
@@ -34,7 +56,10 @@ public class Ride implements RideInterface {
     public Employee getOperator() { return operator; }
     public void setOperator(Employee operator) { this.operator = operator; }
     public LinkedList<Visitor> getRideHistory() { return rideHistory; }
+    public Queue<Visitor> getWaitingLine() { return waitingLine; }
 
+
+    // ------ part3/part4 ------
     @Override
     public void addVisitorToQueue(Visitor visitor) {
         if (visitor != null) {
@@ -125,10 +150,6 @@ public class Ride implements RideInterface {
         }
     }
 
-    @Override
-    public void runOneCycle() {
-    }
-
     public void sortRideHistory(VisitorComparator comparator) {
         if (rideHistory.isEmpty()) {
             System.out.printf("[%s] Sorting failed: No tourists in cycling history\n", this.rideName);
@@ -142,4 +163,43 @@ public class Ride implements RideInterface {
         Collections.sort(rideHistory, comparator);
         System.out.printf("The cycling history of [%s] has been sorted according to the rules (age ascending → name ascending)\n", this.rideName);
     }
+
+    // ------ part5 ------
+    public void runOneCycle() {
+        System.out.printf("\n[%s] Start attempting to run a cycling cycle once\n", this.rideName);
+
+        // 1. Pre check 1: Whether there is an operator
+        if (operator == null || operator.getEmployeeId().equals("EMP-000")) {
+            System.out.printf("[%s] Running failed: No valid operator assigned\n", this.rideName);
+            return;
+        }
+
+        // 2. Pre check 2: Check if there are any tourists in the waiting queue
+        if (waitingLine.isEmpty()) {
+            System.out.printf("[%s] Running failed: Waiting queue is empty, no tourists can ride\n", this.rideName);
+            return;
+        }
+
+        // 3. Calculate the number of tourists that can be carried this time
+        int availableVisitors = waitingLine.size();
+        int ridersToTake = Math.min(maxRider, availableVisitors);
+        System.out.printf("[%s] Number of tourists that can be carried in this cycle:% d people (remaining queue:% d people, maximum capacity:% d people)\n",
+                this.rideName, ridersToTake, availableVisitors, maxRider);
+
+        // 4. Move a specified number of tourists from the queue to the cycling history
+        for (int i = 0; i < ridersToTake; i++) {
+            Visitor rider = waitingLine.poll();
+            if (rider != null) {
+                addVisitorToHistory(rider);
+            }
+        }
+
+        // 5. Cycling cycle times+1
+        numOfCycles++;
+
+        // 6. Print successful running message
+        System.out.printf("[%s] Cycling cycle running successfully! Current total number of runs:% d times\n", this.rideName, numOfCycles);
+    }
 }
+
+
