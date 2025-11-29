@@ -1,36 +1,51 @@
+// Visitor.java：补充toString()方法，用于打印游客详情
 public class Visitor extends Person {
-    private String visitorTicketNumber; // Ticket number
-    private String visitDate;          // Visit date
+    // Part1原有属性（不变）
+    private String visitorTicketNumber;
+    private String visitDate;
 
-    // 1. Default constructor
+    // Part1原有构造器（不变）
     public Visitor() {
         super();
         this.visitorTicketNumber = "TICKET-000";
         this.visitDate = "Unknown";
     }
 
-    // 2. Constructor with parameters
     public Visitor(String name, int age, String personId, String visitorTicketNumber, String visitDate) {
-        super(name, age, personId); // Initialize the three properties of the parent class
+        super(name, age, personId);
         this.visitorTicketNumber = visitorTicketNumber;
         this.visitDate = visitDate;
     }
 
-    // 3. Getter for subclass specific properties
-    public String getVisitorTicketNumber() {
+    public String getVisitorTicketNumber()
+    {
         return visitorTicketNumber;
     }
 
-    public String getVisitDate() {
-        return visitDate;
-    }
-
-    // 4. Setter for subclass specific properties
-    public void setVisitorTicketNumber(String visitorTicketNumber) {
+    public void setVisitorTicketNumber(String visitorTicketNumber)
+    {
         this.visitorTicketNumber = visitorTicketNumber;
     }
 
-    public void setVisitDate(String visitDate) {
+    public String getVisitDate()
+    {
+        return visitDate;
+    }
+
+    public void setVisitDate(String visitDate)
+    {
         this.visitDate = visitDate;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Visitor {name='%s', age=%d, ID number number='%s', ticket number='%s', visit date='%s'}",
+                super.getName(),
+                super.getAge(),
+                super.getPersonId(),
+                this.visitorTicketNumber,
+                this.visitDate
+        );
     }
 }

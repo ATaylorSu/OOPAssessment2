@@ -1,4 +1,4 @@
-public class Person {
+public abstract class Person {
     private String name;       // Name
     private int age;           // Age
     private String personId;   // Unique identification (such as ID number/tourist ID)
